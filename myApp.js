@@ -8,7 +8,12 @@ app.get('/', (req, res) => {
 
 app.use('/public', express.static(__dirname + '/public'));
 
-app.get('/json', (req, res) => {
+app.use(function (req, res, next) {
+  console.log(`${req.method} ${req.path} - ${req.ip}`);
+  next();
+});
+
+app.use((req, res, next) => {
   const message =
     process.env.MESSAGE_STYLE === 'uppercase' ? 'HELLO JSON' : 'Hello json';
   res.json({ message: message });
